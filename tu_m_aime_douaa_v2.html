@@ -1,0 +1,341 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0px) rotate(-2deg) scale(1); }
+    33% { transform: translateY(-20px) rotate(2deg) scale(1.04); }
+    66% { transform: translateY(-10px) rotate(-1deg) scale(1.02); }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+  @keyframes floatParticle {
+    0% { opacity: 1; transform: translate(0,0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+  }
+  @keyframes gradShift {
+    0%,100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  @keyframes noPanic {
+    0%,100% { transform: rotate(0deg); }
+    20% { transform: rotate(-6deg) scale(0.97); }
+    40% { transform: rotate(6deg) scale(0.97); }
+    60% { transform: rotate(-3deg); }
+    80% { transform: rotate(3deg); }
+  }
+
+  #wrap {
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem 2.5rem;
+    gap: 0;
+    background: #0d0d14;
+    border-radius: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    opacity: 0.18;
+  }
+  .orb1 { width: 300px; height: 300px; background: #ff3d8b; top: -80px; left: -60px; }
+  .orb2 { width: 280px; height: 280px; background: #9b59ff; bottom: -60px; right: -40px; }
+  .orb3 { width: 200px; height: 200px; background: #ff6b35; top: 40%; left: 50%; transform: translate(-50%,-50%); }
+
+  .stars {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .star {
+    position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0;
+    animation: twinkle var(--dur) var(--delay) infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0; } 50% { opacity: var(--op); }
+  }
+
+  #teddy-wrap {
+    position: relative;
+    margin-bottom: 2rem;
+    cursor: default;
+  }
+  #pulse {
+    position: absolute; inset: -20px; border-radius: 50%;
+    border: 2px solid rgba(255,100,180,0.4);
+    animation: pulse-ring 2s ease-out infinite;
+  }
+  #pulse2 {
+    position: absolute; inset: -20px; border-radius: 50%;
+    border: 2px solid rgba(255,100,180,0.2);
+    animation: pulse-ring 2s 0.7s ease-out infinite;
+  }
+  #teddy {
+    font-size: 110px;
+    line-height: 1;
+    animation: float 3s ease-in-out infinite;
+    display: block;
+    filter: drop-shadow(0 0 30px rgba(255,80,160,0.3));
+    position: relative;
+    z-index: 2;
+  }
+
+  #question {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+  #question .name {
+    background: linear-gradient(90deg, #ff6bbd, #c471f5, #fa71cd);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+
+  #subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  #buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  #yes-btn {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff3d8b, #c471f5, #ff3d8b);
+    background-size: 200% auto;
+    color: white;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    width: 160px;
+    height: 56px;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 32px rgba(255,61,139,0.45), 0 0 0 1px rgba(255,255,255,0.08) inset;
+    transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s, width 0.4s cubic-bezier(.34,1.56,.64,1), height 0.4s cubic-bezier(.34,1.56,.64,1), font-size 0.3s;
+    animation: gradShift 3s ease infinite;
+    position: relative;
+    overflow: hidden;
+  }
+  #yes-btn::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.12);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  #yes-btn:hover { transform: scale(1.06) translateY(-2px); box-shadow: 0 12px 40px rgba(255,61,139,0.6), 0 0 0 1px rgba(255,255,255,0.1) inset; }
+  #yes-btn:hover::after { opacity: 1; }
+  #yes-btn:active { transform: scale(0.98); }
+
+  #no-btn {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    cursor: pointer;
+    width: 96px;
+    height: 40px;
+    font-size: 13px;
+    transition: transform 0.2s, opacity 0.3s, width 0.4s, height 0.4s, font-size 0.3s;
+    backdrop-filter: blur(4px);
+  }
+  #no-btn:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); transform: scale(1.03); }
+  #no-btn:active { transform: scale(0.96); }
+
+  #message {
+    display: none;
+    border-radius: 20px;
+    padding: 18px 28px;
+    text-align: center;
+    max-width: 88%;
+    animation: slideUp 0.5s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  #message.yes-msg {
+    background: rgba(255,61,139,0.12);
+    border: 1px solid rgba(255,61,139,0.3);
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ff8ec7;
+    text-shadow: 0 0 30px rgba(255,100,180,0.4);
+  }
+  #message.no-msg {
+    background: rgba(155,89,255,0.1);
+    border: 1px solid rgba(155,89,255,0.25);
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #c9a8ff;
+    animation: slideUp 0.4s cubic-bezier(.34,1.56,.64,1) forwards, noPanic 0.5s 0.1s ease;
+  }
+
+  #particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .p {
+    position: absolute;
+    font-size: 20px;
+    animation: floatParticle 1.8s ease forwards;
+    opacity: 0;
+  }
+</style>
+
+<div id="wrap">
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <div class="bg-orb orb3"></div>
+  <div class="stars" id="stars"></div>
+  <div id="particles"></div>
+
+  <div id="teddy-wrap">
+    <div id="pulse"></div>
+    <div id="pulse2"></div>
+    <div id="teddy">🧸</div>
+  </div>
+
+  <div id="question">Tu m'aimes <span class="name">Douaa</span> ?</div>
+  <div id="subtitle">réponds avec ton coeur 🤍</div>
+
+  <div id="buttons">
+    <button id="yes-btn" onclick="handleYes()">Oui 💖</button>
+    <button id="no-btn" onclick="handleNo()">Non</button>
+  </div>
+
+  <div id="message"></div>
+</div>
+
+<script>
+(function(){
+  var starsEl = document.getElementById('stars');
+  for(var i=0;i<60;i++){
+    var s=document.createElement('div');
+    s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.setProperty('--dur',(2+Math.random()*4)+'s');
+    s.style.setProperty('--delay',(Math.random()*5)+'s');
+    s.style.setProperty('--op',(0.2+Math.random()*0.8)+'');
+    starsEl.appendChild(s);
+  }
+
+  var noCount=0;
+  var noMsgs=[
+    "T SUR BEBE ? 😳",
+    "T SUR EINIYYYA ? 🤨",
+    "Eaawdi khyri bebe ! 🌸",
+    "T VRAIMENT SUR ?? 🥺",
+    "EAAWDI KHYRI !! 💕",
+    "Bebe non... 🫠",
+    "Dernière chance ! 💖"
+  ];
+
+  window.handleYes=function(){
+    var msg=document.getElementById('message');
+    msg.className='yes-msg';
+    msg.style.display='block';
+    msg.textContent='💖 ANA NTNAKK AELIK 💖';
+    launch(30);
+    document.getElementById('teddy').style.filter='drop-shadow(0 0 50px rgba(255,80,160,0.7))';
+  };
+
+  window.handleNo=function(){
+    noCount++;
+    var nb=document.getElementById('no-btn');
+    var yb=document.getElementById('yes-btn');
+
+    var nw=Math.max(36,96-noCount*14);
+    var nh=Math.max(24,40-noCount*4);
+    var nf=Math.max(9,13-noCount*1.2);
+    nb.style.width=nw+'px';
+    nb.style.height=nh+'px';
+    nb.style.fontSize=nf+'px';
+    nb.style.padding='2px 4px';
+
+    var yw=Math.min(300,160+noCount*30);
+    var yh=Math.min(100,56+noCount*8);
+    var yf=Math.min(34,18+noCount*3);
+    yb.style.width=yw+'px';
+    yb.style.height=yh+'px';
+    yb.style.fontSize=yf+'px';
+
+    var idx=Math.min(noCount-1,noMsgs.length-1);
+    var msg=document.getElementById('message');
+    msg.style.display='none';
+    void msg.offsetWidth;
+    msg.className='no-msg';
+    msg.style.display='block';
+    msg.textContent=noMsgs[idx];
+
+    if(noCount>=6){ nb.style.opacity='0.2'; nb.style.pointerEvents='none'; }
+  };
+
+  function launch(n){
+    var c=document.getElementById('particles');
+    var em=['💖','💕','✨','🌸','💗','⭐','🎀','💝','🩷','💫'];
+    for(var i=0;i<n;i++){
+      (function(i){
+        setTimeout(function(){
+          var p=document.createElement('div');
+          p.className='p';
+          p.textContent=em[Math.floor(Math.random()*em.length)];
+          p.style.left=(10+Math.random()*80)+'%';
+          p.style.top=(20+Math.random()*60)+'%';
+          var dx=(Math.random()-0.5)*200+'px';
+          var dy=(-60-Math.random()*160)+'px';
+          p.style.setProperty('--dx',dx);
+          p.style.setProperty('--dy',dy);
+          p.style.animationDuration=(1.2+Math.random()*1)+'s';
+          p.style.fontSize=(14+Math.random()*16)+'px';
+          c.appendChild(p);
+          setTimeout(function(){p.remove();},2500);
+        },i*60);
+      })(i);
+    }
+  }
+})();
+</script>
